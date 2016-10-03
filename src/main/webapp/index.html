@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <script src="resources/stomp.js"></script>
+    <script src="resources/sockjs.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+        function setConnected(connected) {
+            document.getElementById('connect').disabled = connected;
+            document.getElementById('disconnect').disabled = !connected;
+        }
+
+        function connect() {
+            var socket = new SockJS('/color');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                setConnected(true);
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/color', function(greeting){
+                    alert(JSON.parse(greeting.body).comment);
+                });
+            });
+        }
+
+        function disconnect() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+            setConnected(false);
+            console.log("Disconnected");
+        }
+
+        function sendColor(color) {
+            stompClient.send("/color", {}, JSON.stringify({ 'colorString': color }));
+        }
+    </script>
+</head>
+<body onload="disconnect()" bgcolor="#c0c0c0">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div>
+    <div>
+        <button id="connect" onclick="connect();">Connect</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+    </div>
+</div>
+</body>
+</html>
