@@ -3,6 +3,7 @@ package by.sherby;
 /**
  * Created by Sergey on 03.10.2016.
  */
+import by.sherby.controller.RobotsArea;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -17,6 +18,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 public class Main extends AbstractWebSocketMessageBrokerConfigurer {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
+
     }
 
     @Override

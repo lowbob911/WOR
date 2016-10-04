@@ -30,8 +30,8 @@
             console.log("Disconnected");
         }
 
-        function sendColor(color) {
-            stompClient.send("/color", {}, JSON.stringify({ 'colorString': color }));
+        function sendTask() {
+            stompClient.send("/task", {}, JSON.stringify({ 'comment': 'clientTask' }));
         }
     </script>
 </head>
@@ -42,6 +42,7 @@
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+        <button id="task" onclick="sendTask();">sendTask()</button>
     </div>
 </div>
 </body>
