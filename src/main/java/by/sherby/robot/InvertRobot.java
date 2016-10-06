@@ -1,4 +1,4 @@
-package by.sherby.robots;
+package by.sherby.robot;
 
 import by.sherby.pojo.ClientTask;
 import by.sherby.pojo.RobotReport;

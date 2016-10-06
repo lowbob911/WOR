@@ -1,8 +1,8 @@
 package by.sherby.utils;
 
-import by.sherby.robots.InvertRobot;
-import by.sherby.robots.Robot;
-import by.sherby.robots.UpperCountRobot;
+import by.sherby.robot.InvertRobot;
+import by.sherby.robot.Robot;
+import by.sherby.robot.UpperCountRobot;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
