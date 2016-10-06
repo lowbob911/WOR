@@ -4,18 +4,26 @@ package by.sherby.pojo;
  * Created by Sergey on 03.10.2016.
  */
 public class RobotReport {
-    private String comment;
+    private String result,name;
 
-    public RobotReport(String comment){
-        this.comment=comment;
+    public RobotReport(String result,String name){
+        this.result=result;
+        this.name=name;
     }
 
-    public String getComment() {
-        return comment;
+    public String getName() {
+        return name;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
 }

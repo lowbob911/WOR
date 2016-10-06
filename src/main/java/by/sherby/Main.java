@@ -18,11 +18,10 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 public class Main extends AbstractWebSocketMessageBrokerConfigurer {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/color").withSockJS();
+        registry.addEndpoint("/task").withSockJS();
     }
 }

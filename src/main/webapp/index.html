@@ -5,19 +5,15 @@
     <script src="resources/sockjs.js"></script>
     <script type="text/javascript">
         var stompClient = null;
-        function setConnected(connected) {
-            document.getElementById('connect').disabled = connected;
-            document.getElementById('disconnect').disabled = !connected;
-        }
-
         function connect() {
-            var socket = new SockJS('/color');
+            var socket = new SockJS('/task');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
-                setConnected(true);
-                console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/color', function(greeting){
-                    alert(JSON.parse(greeting.body).comment);
+                stompClient.subscribe('/task/resp', function(greeting){
+                    document.getElementById('log').value += JSON.parse(greeting.body).name+' выполнил свою задачу с результатом:'+JSON.parse(greeting.body).result+'\n';
+                });
+                stompClient.subscribe('/task/err', function(greeting){
+                    document.getElementById('log').value +="Что-то пошло не так:"+greeting.body+'\n';
                 });
             });
         }
@@ -26,24 +22,27 @@
             if (stompClient != null) {
                 stompClient.disconnect();
             }
-            setConnected(false);
             console.log("Disconnected");
         }
 
-        function sendTask() {
-            stompClient.send("/task", {}, JSON.stringify({ 'comment': 'clientTask' }));
+        function sendTask(type) {
+            stompClient.send("/task", {}, JSON.stringify({'string': document.getElementById('input').value,'type':type}));
         }
     </script>
 </head>
-<body onload="disconnect()" bgcolor="#c0c0c0">
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
-    Javascript and reload this page!</h2></noscript>
+<body onload="connect()" bgcolor="#c0c0c0">
 <div>
-    <div>
-        <button id="connect" onclick="connect();">Connect</button>
-        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
-        <button id="task" onclick="sendTask();">sendTask()</button>
+    <div align="center">
+        <input id="input" required="required" name="str" type="text"/>
     </div>
+    <div align="center">
+        <button id="invert" onclick="sendTask(1);">invert</button>
+        <button id="task" onclick="sendTask(2);">countUpperChars</button>
+    </div>
+    <div align="center">
+        <textarea id="log" name="log" style="width: 500px;height: 600px"></textarea>
+    </div>
+
 </div>
 </body>
 </html>

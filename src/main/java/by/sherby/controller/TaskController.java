@@ -5,19 +5,20 @@ package by.sherby.controller;
  */
 import by.sherby.pojo.RobotReport;
 import by.sherby.pojo.ClientTask;
-import by.sherby.pojo.RobotTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import org.springframework.stereotype.Controller;
 
+import java.util.Collections;
+import java.util.logging.Level;
+
 @Controller
 public class TaskController {
-
-    private Logger log = LoggerFactory.getLogger(TaskController.class);
+    private static Logger log = Logger.getLogger(TaskController.class.getName());
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -26,22 +27,19 @@ public class TaskController {
 
 
     @MessageMapping("/task")
-    public void receiveColor(ClientTask t){
-        Robot r = new Robot(ra.taskQueue);
-        r.start();
-        Tasker tasker = new Tasker(ra.taskQueue);
-        Thread  tt = new Thread(tasker,"tasker");
-        tt.start();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println(tt.isAlive());
-        tt=new Thread(tasker,"tasker");
-        tt.start();
+    public void receiveTask(ClientTask t){
+     try {
+         ra.executeTask(t);
+     }
+     catch (Exception ex){
+         sendErrMessage(ex.toString());
+         log.log(Level.SEVERE, ex.getMessage(), ex);
+     }
     }
-    public void sendLogMessgae(RobotReport rr){
-        simpMessagingTemplate.convertAndSend("/topic/color", rr);
+    public void sendLogMessage(RobotReport rr){
+        simpMessagingTemplate.convertAndSend("/task/resp", rr);
+    }
+    public void sendErrMessage(String err){
+        simpMessagingTemplate.convertAndSend("/task/err", err);
     }
 }

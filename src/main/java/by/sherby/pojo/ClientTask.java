@@ -5,7 +5,7 @@ package by.sherby.pojo;
  */
 public class ClientTask {
     private Integer type;
-    private String comment;
+    private String string;
     public ClientTask(){
 
     }
@@ -17,11 +17,11 @@ public class ClientTask {
         this.type = type;
     }
 
-    public String getComment() {
-        return comment;
+    public String getString() {
+        return string;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setString(String string) {
+        this.string = string;
     }
 }
