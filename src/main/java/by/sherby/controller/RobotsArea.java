@@ -1,8 +1,8 @@
 package by.sherby.controller;
 
-import by.sherby.robot.InvertRobot;
-import by.sherby.robot.Robot;
-import by.sherby.robot.UpperCountRobot;
+import by.sherby.robots.InvertRobot;
+import by.sherby.robots.Robot;
+import by.sherby.robots.UpperCountRobot;
 import by.sherby.pojo.ClientTask;
 import by.sherby.utils.RobotFactory;
 import org.springframework.beans.factory.annotation.Autowired;

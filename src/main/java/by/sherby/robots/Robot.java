@@ -1,4 +1,4 @@
-package by.sherby.robot;
+package by.sherby.robots;
 
 import by.sherby.controller.TaskController;
 import by.sherby.pojo.ClientTask;
