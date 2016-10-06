@@ -4,6 +4,7 @@ import by.sherby.robots.InvertRobot;
 import by.sherby.robots.Robot;
 import by.sherby.robots.UpperCountRobot;
 import by.sherby.pojo.ClientTask;
+import by.sherby.utils.RobotFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

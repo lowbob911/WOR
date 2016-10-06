@@ -1,4 +1,4 @@
-package by.sherby.controller;
+package by.sherby.utils;
 
 import by.sherby.robots.InvertRobot;
 import by.sherby.robots.Robot;
