@@ -17,6 +17,11 @@ public class UpperCountRobot extends Robot {
         thread.start();
     }
 
+    @Override
+    public Integer getType() {
+        return 2;
+    }
+
     private class Task implements Runnable{
         public Task(){
 

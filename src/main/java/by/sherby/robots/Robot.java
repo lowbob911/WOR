@@ -37,5 +37,6 @@ public abstract class Robot {
     public void setTc(TaskController tc) {
         this.tc = tc;
     }
+    abstract public Integer getType();
 }
 

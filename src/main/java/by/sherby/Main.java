@@ -19,7 +19,6 @@ public class Main extends AbstractWebSocketMessageBrokerConfigurer {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
-
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/task").withSockJS();

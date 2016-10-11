@@ -1,15 +1,18 @@
 package by.sherby.controller;
 
+import by.sherby.pojo.Robot4List;
 import by.sherby.robots.InvertRobot;
 import by.sherby.robots.Robot;
 import by.sherby.robots.UpperCountRobot;
 import by.sherby.pojo.ClientTask;
 import by.sherby.utils.RobotFactory;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sergey on 04.10.2016.
@@ -51,6 +54,18 @@ public class RobotsArea {
                 newR.setTc(tc);
                 newR.addTask(t);
                 addRobot(newR);
+                tc.sendRobots();
             }
+    }
+
+    public List<Robot4List> getRobotsAsList() {
+        if (robots.size() > 0) {
+            ArrayList<Robot4List> arr = new ArrayList<>();
+            for (Robot r : robots) {
+                arr.add(new Robot4List(r.getName(), r.getType()));
+            }
+            return arr;
+        } else
+            return null;
     }
 }

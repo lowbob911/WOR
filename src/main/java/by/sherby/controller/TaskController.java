@@ -3,15 +3,28 @@ package by.sherby.controller;
 /**
  * Created by Sergey on 03.10.2016.
  */
+import by.sherby.pojo.Robot4List;
 import by.sherby.pojo.RobotReport;
 import by.sherby.pojo.ClientTask;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
+
+import by.sherby.robots.Robot;
+import com.fasterxml.jackson.core.JsonParser;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
 import java.util.logging.Level;
@@ -25,6 +38,10 @@ public class TaskController {
     @Autowired
     private RobotsArea ra;
 
+   @SubscribeMapping("/robotlist")
+   public List getRobots(){
+       return ra.getRobotsAsList();
+   }
 
     @MessageMapping("/task")
     public void receiveTask(ClientTask t){
@@ -41,5 +58,8 @@ public class TaskController {
     }
     public void sendErrMessage(String err){
         simpMessagingTemplate.convertAndSend("/task/err", err);
+    }
+    public void sendRobots(){
+        simpMessagingTemplate.convertAndSend("/robotlist", ra.getRobotsAsList());
     }
 }

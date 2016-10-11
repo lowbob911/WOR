@@ -17,6 +17,11 @@ public class InvertRobot extends Robot {
         thread.start();
     }
 
+    @Override
+    public Integer getType() {
+        return 1;
+    }
+
     private class Task implements Runnable{
         public Task(){
         }

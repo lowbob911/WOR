@@ -15,9 +15,22 @@
                 stompClient.subscribe('/task/err', function(greeting){
                     document.getElementById('log').value +="Что-то пошло не так:"+greeting.body+'\n';
                 });
+                stompClient.subscribe('/robotlist', function(greeting){
+                    var rSel = document.getElementById('selectRobot');
+                    var length = rSel.options.length;
+                    console.log(greeting.body);
+                    for (i = 0; i < length; i++) {
+                        rSel.options[i] = null;
+                    }
+                    var data = JSON.parse(greeting.body);
+                    for(var x in data){
+                        var option = document.createElement("option");
+                        option.text = data[x].name+" "+ data[x].type;
+                        rSel.add(option);
+                    }
             });
         }
-
+            );}
         function disconnect() {
             if (stompClient != null) {
                 stompClient.disconnect();
@@ -28,21 +41,30 @@
         function sendTask(type) {
             stompClient.send("/task", {}, JSON.stringify({'string': document.getElementById('input').value,'type':type}));
         }
+        function kill() {
+            var rSel = document.getElementById('selectRobot');
+            stompClient.send("/kill", {},rSel[rSel.selectedIndex]);
+        }
     </script>
 </head>
 <body onload="connect()" bgcolor="#c0c0c0">
 <div>
+    <div align="center">
+        <select name="" id="selectRobot">
+
+        </select>
+    </div>
     <div align="center">
         <input id="input" required="required" name="str" type="text"/>
     </div>
     <div align="center">
         <button id="invert" onclick="sendTask(1);">invert</button>
         <button id="task" onclick="sendTask(2);">countUpperChars</button>
+        <button id="kill" onclick="kill();">kill</button>
     </div>
     <div align="center">
-        <textarea id="log" name="log" style="width: 500px;height: 600px"></textarea>
+        Задание:<textarea id="log" name="log" style="width: 500px;height: 600px"></textarea>
     </div>
-
 </div>
 </body>
 </html>
