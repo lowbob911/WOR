@@ -53,6 +53,18 @@ public class TaskController {
          log.log(Level.SEVERE, ex.getMessage(), ex);
      }
     }
+
+    @MessageMapping("/kill")
+    public void receiveKill(String t){
+        try {
+            System.out.println(t);
+           if(ra.killRobot(t)) sendRobots();
+        }
+        catch (Exception ex){
+            sendErrMessage(ex.toString());
+            log.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
     public void sendLogMessage(RobotReport rr){
         simpMessagingTemplate.convertAndSend("/task/resp", rr);
     }

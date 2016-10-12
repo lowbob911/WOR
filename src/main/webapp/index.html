@@ -5,6 +5,9 @@
     <script src="resources/sockjs.js"></script>
     <script type="text/javascript">
         var stompClient = null;
+        var types = new Map();
+        types.set(1,"Инвертор");
+        types.set(2,"Счетчик");
         function connect() {
             var socket = new SockJS('/task');
             stompClient = Stomp.over(socket);
@@ -17,20 +20,21 @@
                 });
                 stompClient.subscribe('/robotlist', function(greeting){
                     var rSel = document.getElementById('selectRobot');
-                    var length = rSel.options.length;
-                    console.log(greeting.body);
-                    for (i = 0; i < length; i++) {
-                        rSel.options[i] = null;
+                    for(var i =  rSel.options.length - 1 ; i >= 0 ; i--)
+                    {
+                        rSel.remove(i);
                     }
                     var data = JSON.parse(greeting.body);
                     for(var x in data){
                         var option = document.createElement("option");
-                        option.text = data[x].name+" "+ data[x].type;
+                        option.text = data[x].name+" "+ types.get(data[x].type);
+                        option.value = data[x].name;
                         rSel.add(option);
                     }
             });
         }
             );}
+
         function disconnect() {
             if (stompClient != null) {
                 stompClient.disconnect();
@@ -39,31 +43,32 @@
         }
 
         function sendTask(type) {
-            stompClient.send("/task", {}, JSON.stringify({'string': document.getElementById('input').value,'type':type}));
+            var f = document.getElementsByTagName('form')[0];
+            if(f.checkValidity()) {
+                stompClient.send("/task", {}, JSON.stringify({'string': document.getElementById('input').value,'type':type}));
+            }
         }
         function kill() {
             var rSel = document.getElementById('selectRobot');
-            stompClient.send("/kill", {},rSel[rSel.selectedIndex]);
+            stompClient.send("/kill",{},JSON.stringify(rSel[rSel.selectedIndex].value));
         }
     </script>
 </head>
 <body onload="connect()" bgcolor="#c0c0c0">
 <div>
     <div align="center">
-        <select name="" id="selectRobot">
-
+        Список роботов:<select name="" id="selectRobot">
         </select>
-    </div>
-    <div align="center">
-        <input id="input" required="required" name="str" type="text"/>
-    </div>
-    <div align="center">
-        <button id="invert" onclick="sendTask(1);">invert</button>
-        <button id="task" onclick="sendTask(2);">countUpperChars</button>
         <button id="kill" onclick="kill();">kill</button>
     </div>
     <div align="center">
-        Задание:<textarea id="log" name="log" style="width: 500px;height: 600px"></textarea>
+        <form id="form">Задание:<input id="input" required name="str" type="text"/>
+            <button id="invert" onclick="sendTask(1);" type="button">invert</button>
+            <button id="task" onclick="sendTask(2);"  type="button">countUpperChars</button>
+            </form>
+    </div>
+    <div align="center">
+        <textarea id="log" name="log" style="width: 500px;height: 600px"></textarea>
     </div>
 </div>
 </body>

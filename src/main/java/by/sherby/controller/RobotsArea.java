@@ -23,19 +23,23 @@ public class RobotsArea {
     @Autowired
     TaskController tc;
     private ArrayList<Robot> robots = new ArrayList<>();
+    private int seq=0;
 
     public RobotsArea(){
         super();
     }
+
     private void addRobot(Robot r){
         robots.add(r);
     }
+
     private Robot getFreeRobotByType(Class type){
         for(Robot r:robots){
             if(r.getClass().equals(type) && r.isFree()) return r;
         }
         return null;
     }
+
     public void executeTask(ClientTask t){
             Class type = null;
             switch (t.getType()) {
@@ -50,7 +54,7 @@ public class RobotsArea {
             if (r != null) {
                 r.addTask(t);
             } else {
-                Robot newR = RobotFactory.createRobotByClass(type, "name" + robots.size());
+                Robot newR = RobotFactory.createRobotByClass(type, "name" + seq++);
                 newR.setTc(tc);
                 newR.addTask(t);
                 addRobot(newR);
@@ -59,13 +63,20 @@ public class RobotsArea {
     }
 
     public List<Robot4List> getRobotsAsList() {
-        if (robots.size() > 0) {
             ArrayList<Robot4List> arr = new ArrayList<>();
             for (Robot r : robots) {
                 arr.add(new Robot4List(r.getName(), r.getType()));
             }
             return arr;
-        } else
-            return null;
+    }
+
+    public Boolean killRobot(String name){
+        for (Robot r : robots) {
+            if(r.getName().equals(name)) {
+                robots.remove(r);
+                return true;
+            }
+        }
+        return false;
     }
 }
